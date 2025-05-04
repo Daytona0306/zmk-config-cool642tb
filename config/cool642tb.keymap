@@ -89,10 +89,10 @@
 
         layer_2 {
             bindings = <
-&trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans                          &trans
+&kp EXCLAMATION    &kp DOUBLE_QUOTES  &kp HASH      &kp DOLLAR                 &kp PERCENT                     &kp AMPERSAND  &kp SQT       &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp NON_US_BACKSLASH
+&kp TILDE          &kp GRAVE          &kp QUESTION  &kp EQUAL                  &kp UNDERSCORE  &trans  &none   &kp PLUS       &kp ASTERISK  &kp LEFT_BRACE        &kp RIGHT_BRACE        &kp PIPE
+&kp LS(LA(MINUS))  &trans             &trans        &trans                     &trans          &trans  &trans  &trans         &trans        &trans                &trans                 &trans
+&trans             &trans             &trans        &mt LEFT_SHIFT LANGUAGE_2  &trans          &trans  &trans  &trans                                                                    &trans
             >;
         };
 
