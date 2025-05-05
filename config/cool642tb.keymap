@@ -4,7 +4,9 @@
 #include <dt-bindings/zmk/pointing.h>
 
 //#define MOUSE 4
+
 #define SCROLL 5
+
 //#define NUM 6
 
 &mt {
@@ -78,10 +80,10 @@
 
         default_layer {
             bindings = <
-&kp Q             &kp L         &kp U    &kp COMMA                    &kp PERIOD                                   &kp F        &kp W  &kp R    &kp Y            &kp P
-&mt E LCTRL       &kp I         &lt 5 A  &lt 4 O                      &kp G        &none                &none      &kp K        &kp T  &lt 5 N  &kp S            &lt 4 H
-&mt LEFT_SHIFT Z  &kp X         &kp C    &kp V                        &kp B        &none                &none      &kp G        &kp D  &kp M    &mt RIGHT_ALT J  &kp B
-&kp LEFT_ALT      &kp LEFT_WIN  &kp TAB  &mt LEFT_SHIFT INT_MUHENKAN  &lt 3 ENTER  &mt LCTRL BACKSPACE  &lt 2 DEL  &lt 1 SPACE                                   &mt RIGHT_SHIFT INT_HENKAN
+&kp Q             &kp L         &kp U    &kp COMMA                    &kp PERIOD                                     &kp F        &kp W  &kp R    &kp Y            &kp P
+&mt E LCTRL       &kp I         &lt 5 A  &lt 4 O                      &kp MINUS      &none                &none      &kp K        &kp T  &lt 5 N  &kp S            &lt 4 H
+&mt LEFT_SHIFT Z  &kp X         &kp C    &kp V                        &kp SEMICOLON  &none                &none      &kp G        &kp D  &kp M    &mt RIGHT_ALT J  &kp B
+&kp LEFT_ALT      &kp LEFT_WIN  &kp TAB  &mt LEFT_SHIFT INT_MUHENKAN  &lt 3 ENTER    &mt LCTRL BACKSPACE  &lt 2 DEL  &lt 1 SPACE                                   &mt RIGHT_SHIFT INT_HENKAN
             >;
 
             sensor-bindings = <&inc_dec_kp PG_UP PAGE_DOWN>;
