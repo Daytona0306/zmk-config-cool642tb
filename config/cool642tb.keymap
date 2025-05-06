@@ -94,7 +94,7 @@
             sensor-bindings = <&inc_dec_kp PG_UP PAGE_DOWN>;
         };
 
-        layer_1 {
+        NUM,SYM1 {
             bindings = <
 &kp N1            &kp N2            &kp N3           &kp N4                     &kp N5                               &kp N6         &kp N7                &kp N8                    &kp N9             &kp N0
 &kp CARET         &kp AT_SIGN       &kp SLASH        &kp MINUS                  &kp UNDERSCORE       &none   &none   &kp SEMICOLON  &kp COLON             &kp LEFT_BRACKET          &kp RIGHT_BRACKET  &kp NON_US_BACKSLASH
@@ -105,7 +105,7 @@
             sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP>;
         };
 
-        layer_2 {
+        SYM2 {
             bindings = <
 &kp EXCLAMATION    &kp DOUBLE_QUOTES  &kp HASH      &kp DOLLAR                 &kp PERCENT                     &kp AMPERSAND           &kp SQT                  &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS       &kp NON_US_BACKSLASH
 &kp TILDE          &kp GRAVE          &kp QUESTION  &kp EQUAL                  &kp UNDERSCORE  &trans  &trans  &kp PLUS                &kp ASTERISK             &kp LEFT_BRACE        &kp RIGHT_BRACE             &kp PIPE
@@ -114,16 +114,16 @@
             >;
         };
 
-        layer_4 {
+        MOUSE {
             bindings = <
 &trans  &trans  &trans  &trans  &trans                  &trans    &trans    &trans    &trans    &trans
-&trans  &trans  &trans  &trans  &trans  &trans  &trans  &mkp MB5  &mkp MB1  &mo 5     &mkp MB2  &mkp MB4
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &mkp MB5  &mkp MB1  &mo 4     &mkp MB2  &mkp MB4
 &trans  &trans  &trans  &trans  &trans  &trans  &trans  &mkp MB4  &trans    &mkp MB3  &trans    &mkp MB5
 &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans                                  &trans
             >;
         };
 
-        layer_3 {
+        NUM-SCROLL {
             bindings = <
 &kp ESC    &trans     &trans       &trans  &trans                         &kp LANGUAGE_2  &kp NUMBER_7  &kp NUMBER_8  &kp NUMBER_9  &kp SLASH
 &kp LCTRL  &trans     &trans       &trans  &trans    &trans       &trans  &kp EQUAL       &kp NUMBER_4  &kp NUMBER_5  &kp NUMBER_6  &kp ASTERISK
@@ -132,7 +132,7 @@
             >;
         };
 
-        layer_5 {
+        FUN-ARROW {
             bindings = <
 &kp ESC  &kp F1  &kp F2   &kp F3   &kp F4                   &kp INSERT   &kp HOME        &kp UP_ARROW  &kp END    &kp PAGE_UP
 &trans   &kp F5  &kp F6   &kp F7   &kp F8   &trans  &trans  &kp LC(TAB)  &kp LEFT_ARROW  &kp UP_ARROW  &kp RIGHT  &kp PAGE_DOWN
@@ -141,7 +141,7 @@
             >;
         };
 
-        layer_6 {
+        BT {
             bindings = <
 &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4                  &trans  &trans  &trans  &trans  &trans
 &bt BT_CLR    &trans        &trans        &trans        &trans        &trans  &trans  &trans  &trans  &trans  &trans  &trans
