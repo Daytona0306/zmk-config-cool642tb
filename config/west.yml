@@ -1,9 +1,9 @@
 manifest:
   remotes:
     - name: zmkfirmware
-      url-base: https://github.com/petejohanson
-    - name: inorichi
-      url-base: https://github.com/inorichi
+      url-base: https://github.com/zmkfirmware
+    - name: Daytona0306
+      url-base: https://github.com/Daytona0306
     - name: caksoylar  # <-- new entry
       url-base: https://github.com/caksoylar
 
@@ -11,11 +11,11 @@ manifest:
   projects:
     - name: zmk
       remote: zmkfirmware
-      revision: feat/pointers-move-scroll
+      revision: main
       import: app/west.yml
     - name: zmk-pmw3610-driver
-      remote: inorichi
-      revision: main
+      remote: Daytona0306
+      revision: scroll-acceleration-feature
     - name: zmk-rgbled-widget  # <-- new entry
       remote: caksoylar
       revision: main
