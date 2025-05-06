@@ -15,7 +15,7 @@ manifest:
       import: app/west.yml
     - name: zmk-pmw3610-driver
       remote: Daytona0306
-      revision: scroll-acceleration-feature
+      revision: scroll_mouse-acceleration
     - name: zmk-rgbled-widget  # <-- new entry
       remote: caksoylar
       revision: main
