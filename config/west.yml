@@ -6,7 +6,7 @@ manifest:
       url-base: https://github.com/sayu-hub
     - name: caksoylar  # <-- new entry
       url-base: https://github.com/caksoylar
-    - name: zmkfirmware　# <-- new entry
+    - name: zmkfirmware
       url-base: https://github.com/petejohanson
     - name: inorichi
       url-base: https://github.com/inorichi
