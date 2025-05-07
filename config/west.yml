@@ -17,7 +17,7 @@ manifest:
       remote: Daytona0306
       revision: test
     - name: zmk-rgbled-widget  # <-- new entry
-      remote: Daytona0306
-      revision: test
+      remote: caksoylar
+      revision: main
   self:
     path: config
