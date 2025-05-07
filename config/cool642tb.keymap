@@ -67,6 +67,13 @@
             bindings = <&to 0 &macro_param_1to1 &kp MACRO_PLACEHOLDER>;
             label = "TO_LAYER_0";
         };
+
+        PW_1: PW_1 {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LS(Y) &kp U &kp S &kp H &kp I &kp N1 &kp N9 &kp N9 &kp N1 &kp N0 &kp N3 &kp N0 &kp N6>;
+            label = "PW_1";
+        };
     };
 
     behaviors {
@@ -86,7 +93,7 @@
         default_layer {
             bindings = <
 &kp Q             &kp L         &kp U    &kp COMMA                    &kp PERIOD                                     &kp F        &kp W  &kp R    &kp Y            &kp P
-&mt LCTRL E       &kp I         &lt 5 A  &lt 3 O                      &kp MINUS      &none                &none      &kp K        &kp T  &lt 5 N  &kp S            &lt 3 H
+&mt LCTRL E       &kp I         &lt 5 A  &lt 3 O                      &kp MINUS      &none                &to 4      &kp K        &kp T  &lt 5 N  &kp S            &lt 3 H
 &mt LEFT_SHIFT Z  &kp X         &kp C    &kp V                        &kp SEMICOLON  &none                &none      &kp G        &kp D  &kp M    &mt RIGHT_ALT J  &kp B
 &kp LEFT_ALT      &kp LEFT_WIN  &kp TAB  &mt LEFT_SHIFT INT_MUHENKAN  &lt 4 ENTER    &mt LCTRL BACKSPACE  &lt 2 DEL  &lt 1 SPACE                                   &mt RIGHT_SHIFT INT_HENKAN
             >;
@@ -109,26 +116,26 @@
             bindings = <
 &kp EXCLAMATION    &kp DOUBLE_QUOTES  &kp HASH      &kp DOLLAR                 &kp PERCENT                     &kp AMPERSAND           &kp SQT                  &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS       &kp NON_US_BACKSLASH
 &kp TILDE          &kp GRAVE          &kp QUESTION  &kp EQUAL                  &kp UNDERSCORE  &trans  &trans  &kp PLUS                &kp ASTERISK             &kp LEFT_BRACE        &kp RIGHT_BRACE             &kp PIPE
-&kp LS(LA(MINUS))  &trans             &trans        &trans                     &trans          &trans  &trans  &kp LC(LG(LEFT_ARROW))  &kp LC(LG(RIGHT_ARROW))  &kp LC(LG(LA(D)))     &kp LA(LC(LG(LEFT_ARROW)))  &kp LA(LC(LG(RIGHT_ARROW)))
+&kp LS(LA(MINUS))  &trans             &trans        &trans                     &PW_1           &trans  &trans  &kp LC(LG(LEFT_ARROW))  &kp LC(LG(RIGHT_ARROW))  &kp LC(LG(LA(D)))     &kp LA(LC(LG(LEFT_ARROW)))  &kp LA(LC(LG(RIGHT_ARROW)))
 &trans             &trans             &trans        &mt LEFT_SHIFT LANGUAGE_2  &trans          &trans  &trans  &trans                                                                                             &kp LC(LG(F4))
             >;
         };
 
         MOUSE {
             bindings = <
-&trans  &trans  &trans  &trans  &trans                  &trans    &trans    &trans    &trans    &trans
-&trans  &trans  &trans  &trans  &trans  &trans  &trans  &mkp MB5  &mkp MB1  &mo 4     &mkp MB2  &mkp MB4
-&trans  &trans  &trans  &trans  &trans  &trans  &trans  &mkp MB4  &trans    &mkp MB3  &trans    &mkp MB5
-&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans                                  &trans
+&trans  &trans  &trans  &trans                       &trans                  &trans    &trans    &trans    &trans    &trans
+&trans  &trans  &trans  &trans                       &trans  &trans  &trans  &mkp MB5  &mkp MB1  &mo 4     &mkp MB2  &mkp MB4
+&trans  &trans  &trans  &trans                       &trans  &trans  &trans  &mkp MB4  &trans    &mkp MB3  &trans    &mkp MB5
+&trans  &trans  &trans  &mt LEFT_SHIFT INT_MUHENKAN  &trans  &trans  &trans  &trans                                  &trans
             >;
         };
 
         NUM-SCROLL {
             bindings = <
-&kp ESC    &trans     &trans       &trans  &trans                         &kp LANGUAGE_2  &kp NUMBER_7  &kp NUMBER_8  &kp NUMBER_9  &kp SLASH
-&kp LCTRL  &trans     &trans       &trans  &trans    &trans       &trans  &kp EQUAL       &kp NUMBER_4  &kp NUMBER_5  &kp NUMBER_6  &kp ASTERISK
-&kp N0     &trans     &trans       &trans  &kp PLUS  &kp LC(DEL)  &trans  &kp NUMBER_0    &kp NUMBER_1  &kp NUMBER_2  &kp NUMBER_3  &kp MINUS
-&kp DOT    &kp COMMA  &kp AT_SIGN  &trans  &trans    &trans       &trans  &kp DOT                                                   &kp PLUS
+&kp ESC    &kp N7        &kp N8        &kp N9        &trans                    &kp LANGUAGE_2  &kp NUMBER_7  &kp NUMBER_8  &kp NUMBER_9  &kp SLASH
+&kp LCTRL  &kp NUMBER_4  &kp N5        &kp NUMBER_6  &trans    &trans  &to 0   &kp EQUAL       &kp NUMBER_4  &kp NUMBER_5  &kp NUMBER_6  &kp ASTERISK
+&kp N0     &kp NUMBER_1  &kp NUMBER_2  &kp NUMBER_3  &kp PLUS  &trans  &trans  &kp NUMBER_0    &kp NUMBER_1  &kp NUMBER_2  &kp NUMBER_3  &kp MINUS
+&kp DOT    &kp COMMA     &kp AT_SIGN   &trans        &trans    &trans  &trans  &kp DOT                                                   &kp PLUS
             >;
         };
 
