@@ -74,6 +74,13 @@
             bindings = <&kp LS(Y) &kp U &kp S &kp H &kp I &kp N1 &kp N9 &kp N9 &kp N1 &kp N0 &kp N3 &kp N0 &kp N6>;
             label = "PW_1";
         };
+
+        BrowsToExplore: BrowsToExplore {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LS(LA(B)) &kp ENTER &kp LG(NUMBER_1)>;
+            label = "BROWSTOEXPLORE";
+        };
     };
 
     behaviors {
@@ -104,7 +111,7 @@
         NUM,SYM1 {
             bindings = <
 &kp N1            &kp N2            &kp N3           &kp N4                     &kp N5                                   &kp N6         &kp N7                &kp N8             &kp N9                &kp N0
-&kp EQUAL         &kp LEFT_BRACKET  &kp SLASH        &kp MINUS                  &kp LS(INTERNATIONAL_1)  &none   &none   &kp SEMICOLON  &kp COLON             &kp RIGHT_BRACKET  &kp NON_US_BACKSLASH  &kp INT_YEN
+&kp EQUAL         &kp LEFT_BRACKET  &kp SLASH        &kp MINUS                  &kp LS(INTERNATIONAL_1)  &none   &none   &kp SEMICOLON  &kp SQT               &kp RIGHT_BRACKET  &kp NON_US_BACKSLASH  &kp INT_YEN
 &kp LC(NUMBER_2)  &kp LC(NUMBER_6)  &kp PRINTSCREEN  &kp LS(LG(S))              &kp LA(PRINTSCREEN)      &none   &none   &kp CAPSLOCK   &kp LS(LC(NUMBER_2))  &kp LS(LC(I))      &kp LS(LC(NUMBER_1))  &kp SCROLLLOCK
 &trans            &trans            &trans           &mt LEFT_SHIFT LANGUAGE_1  &trans                   &trans  &trans  &trans                                                                        &trans
             >;
@@ -114,10 +121,10 @@
 
         SYM2 {
             bindings = <
-&kp LS(NUMBER_1)   &kp LS(NUMBER_2)  &kp LS(NUMBER_3)  &kp LS(NUMBER_4)           &kp LS(N5)                      &kp LS(NUMBER_6)        &kp LS(N7)               &kp LS(N8)         &kp LS(N9)                  &kp LS(N0)
-&kp TILDE          &kp GRAVE         &kp QUESTION      &kp EQUAL                  &kp UNDERSCORE  &trans  &trans  &kp PLUS                &kp ASTERISK             &kp LEFT_BRACE     &kp RIGHT_BRACE             &kp PIPE
-&kp LS(LA(MINUS))  &trans            &trans            &trans                     &PW_1           &trans  &trans  &kp LC(LG(LEFT_ARROW))  &kp LC(LG(RIGHT_ARROW))  &kp LC(LG(LA(D)))  &kp LA(LC(LG(LEFT_ARROW)))  &kp LA(LC(LG(RIGHT_ARROW)))
-&trans             &trans            &trans            &mt LEFT_SHIFT LANGUAGE_2  &trans          &trans  &trans  &trans                                                                                          &kp LC(LG(F4))
+&kp LS(NUMBER_1)   &kp LS(NUMBER_2)    &kp LS(NUMBER_3)  &kp LS(NUMBER_4)           &kp LS(N5)                               &kp LS(NUMBER_6)        &kp LS(N7)               &kp LS(N8)             &kp LS(N9)                  &kp LS(N0)
+&kp LS(EQUAL)      &kp LS(LEFT_BRACE)  &kp QUESTION      &kp LS(UNDERSCORE)         &kp LS(INTERNATIONAL_1)  &trans  &trans  &kp LS(SEMICOLON)       &kp LS(SQT)              &kp LS(RIGHT_BRACKET)  &kp LS(BACKSLASH)           &kp LS(INT3)
+&kp LS(LA(MINUS))  &trans              &trans            &BrowsToExplore            &PW_1                    &trans  &trans  &kp LC(LG(LEFT_ARROW))  &kp LC(LG(RIGHT_ARROW))  &kp LC(LG(LA(D)))      &kp LA(LC(LG(LEFT_ARROW)))  &kp LA(LC(LG(RIGHT_ARROW)))
+&trans             &trans              &trans            &mt LEFT_SHIFT LANGUAGE_2  &trans                   &trans  &trans  &trans                                                                                              &kp LC(LG(F4))
             >;
         };
 
