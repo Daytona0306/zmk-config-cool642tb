@@ -111,7 +111,7 @@
         NUM,SYM1 {
             bindings = <
 &kp N1            &kp N2            &kp N3           &kp N4                     &kp N5                                   &kp N6         &kp N7                &kp N8             &kp N9                &kp N0
-&kp EQUAL         &kp LEFT_BRACKET  &kp SLASH        &kp MINUS                  &kp LS(INTERNATIONAL_1)  &none   &none   &kp SEMICOLON  &kp SQT               &kp RIGHT_BRACKET  &kp NON_US_BACKSLASH  &kp INT_YEN
+&kp EQUAL         &kp LEFT_BRACKET  &kp SLASH        &kp MINUS                  &kp LS(INTERNATIONAL_1)  &none   &none   &kp SEMICOLON  &kp SQT               &kp RIGHT_BRACKET  &kp BACKSLASH         &kp INT_YEN
 &kp LC(NUMBER_2)  &kp LC(NUMBER_6)  &kp PRINTSCREEN  &kp LS(LG(S))              &kp LA(PRINTSCREEN)      &none   &none   &kp CAPSLOCK   &kp LS(LC(NUMBER_2))  &kp LS(LC(I))      &kp LS(LC(NUMBER_1))  &kp SCROLLLOCK
 &trans            &trans            &trans           &mt LEFT_SHIFT LANGUAGE_1  &trans                   &trans  &trans  &trans                                                                        &trans
             >;
