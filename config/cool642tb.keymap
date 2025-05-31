@@ -74,7 +74,7 @@
             label = "TO_LAYER_0";
         };
 
-        PW_1: PW_1 {
+        P1: PW_1 {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
             bindings = <&kp LS(Y) &kp U &kp S &kp H &kp I &kp N1 &kp N9 &kp N9 &kp N1 &kp N0 &kp N3 &kp N0 &kp N6>;
@@ -129,7 +129,7 @@
             bindings = <
 &kp LS(NUMBER_1)   &kp LS(NUMBER_2)    &kp LS(NUMBER_3)  &kp LS(NUMBER_4)           &kp LS(N5)                               &kp LS(NUMBER_6)        &kp LS(N7)               &kp LS(N8)             &kp LS(N9)                  &kp LS(NUMBER_0)
 &kp LS(EQUAL)      &kp LS(LEFT_BRACE)  &kp QUESTION      &kp LS(UNDERSCORE)         &kp LS(INTERNATIONAL_1)  &trans  &trans  &kp LS(SEMICOLON)       &kp LS(SQT)              &kp LS(RIGHT_BRACKET)  &kp LS(BACKSLASH)           &kp LS(INT3)
-&kp LS(LA(MINUS))  &trans              &trans            &BrowsToExplore            &PW_1                    &trans  &trans  &kp LC(LG(LEFT_ARROW))  &kp LC(LG(RIGHT_ARROW))  &kp LC(LG(LA(D)))      &kp LA(LC(LG(LEFT_ARROW)))  &kp LA(LC(LG(RIGHT_ARROW)))
+&kp LS(LA(MINUS))  &trans              &trans            &BrowsToExplore            &P1                      &trans  &trans  &kp LC(LG(LEFT_ARROW))  &kp LC(LG(RIGHT_ARROW))  &kp LC(LG(LA(D)))      &kp LA(LC(LG(LEFT_ARROW)))  &kp LA(LC(LG(RIGHT_ARROW)))
 &trans             &trans              &trans            &mt LEFT_SHIFT LANGUAGE_2  &trans                   &trans  &trans  &trans                                                                                              &kp LC(LG(F4))
             >;
         };
