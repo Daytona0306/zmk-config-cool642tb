@@ -106,7 +106,7 @@
         default_layer {
             bindings = <
 &kp Q             &kp L         &kp U    &kp COMMA                    &kp PERIOD                                     &kp F        &kp W  &kp R    &kp Y            &kp P
-&mt LCTRL E       &kp I         &lt 5 A  &lt 3 O                      &kp MINUS      &none                &to 3      &kp K        &kp T  &lt 5 N  &kp S            &kp H
+&mt LCTRL E       &kp I         &lt 5 A  &lt 3 O                      &kp MINUS      &kp LA(LG(K))        &to 3      &kp K        &kp T  &lt 5 N  &kp S            &kp H
 &mt LEFT_SHIFT Z  &kp X         &kp C    &kp V                        &kp SEMICOLON  &none                &none      &kp G        &kp D  &kp M    &mt RIGHT_ALT J  &lt 3 B
 &kp LEFT_ALT      &kp LEFT_WIN  &kp TAB  &mt LEFT_SHIFT INT_MUHENKAN  &lt 4 ENTER    &mt LCTRL BACKSPACE  &lt 2 DEL  &lt 1 SPACE                                   &mt RIGHT_SHIFT INT_HENKAN
             >;
@@ -154,11 +154,13 @@
 
         FUN-ARROW {
             bindings = <
-&kp ESC  &kp F1  &kp F2   &kp F3   &kp F4                   &kp INSERT   &kp HOME        &kp UP_ARROW  &kp END    &kp PAGE_UP
-&trans   &kp F5  &kp F6   &kp F7   &kp F8   &trans  &trans  &kp LC(TAB)  &kp LEFT_ARROW  &kp UP_ARROW  &kp RIGHT  &kp PAGE_DOWN
-&trans   &kp F9  &kp F10  &kp F11  &kp F12  &trans  &trans  &kp LC(C)    &kp LEFT        &kp DOWN      &kp RIGHT  &kp LC(V)
-&trans   &trans  &trans   &trans   &trans   &trans  &trans  &trans                                                &trans
+&kp ESC  &kp F1  &kp F2   &kp F3   &kp F4                       &kp INSERT   &kp HOME        &kp UP_ARROW  &kp END    &kp PAGE_UP
+&trans   &kp F5  &kp F6   &kp F7   &kp F8   &kp C_MUTE  &trans  &kp LC(TAB)  &kp LEFT_ARROW  &kp UP_ARROW  &kp RIGHT  &kp PAGE_DOWN
+&trans   &kp F9  &kp F10  &kp F11  &kp F12  &trans      &trans  &kp LC(C)    &kp LEFT        &kp DOWN      &kp RIGHT  &kp LC(V)
+&trans   &trans  &trans   &trans   &trans   &trans      &trans  &trans                                                &trans
             >;
+
+            sensor-bindings = <&inc_dec_kp C_VOLUME_UP C_VOLUME_DOWN>;
         };
 
         BT {
