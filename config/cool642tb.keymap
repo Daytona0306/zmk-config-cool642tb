@@ -40,12 +40,6 @@
             key-positions = <9 8>;
         };
 
-        comb5 {
-            bindings = <&bt BT_CLR_ALL>;
-            key-positions = <9 8>;
-            timeout-ms = <0>;
-        };
-
         JP {
             bindings = <&kp LANGUAGE_2>;
             key-positions = <13 12>;
