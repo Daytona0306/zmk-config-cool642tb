@@ -6,7 +6,8 @@ manifest:
       url-base: https://github.com/Daytona0306
     - name: caksoylar  # <-- new entry
       url-base: https://github.com/caksoylar
-
+    - name: sekigon-gonnoc
+      url-base: https://github.com/sekigon-gonnoc
       
   projects:
     - name: zmk
@@ -18,6 +19,9 @@ manifest:
       revision: test
     - name: zmk-rgbled-widget  # <-- new entry
       remote: caksoylar
+      revision: main
+    - name: zmk-feature-non-lipo-battery-management
+      remote: sekigon-gonnoc
       revision: main
   self:
     path: config
