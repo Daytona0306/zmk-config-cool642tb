@@ -26,7 +26,7 @@
         };
 
         comb2 {
-            bindings = <&kp LS(ESCAPE)>;
+            bindings = <&kp ESCAPE>;
             key-positions = <0 1>;
         };
 
