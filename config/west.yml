@@ -14,9 +14,9 @@ manifest:
       remote: zmkfirmware
       revision: main
       import: app/west.yml
-    - name: zmk-pmw3610-driver
+    - name: zmk-pmw3610-driver-badjeff
       remote: Daytona0306
-      revision: test
+      revision: main
     - name: zmk-rgbled-widget  # <-- new entry
       remote: caksoylar
       revision: main
