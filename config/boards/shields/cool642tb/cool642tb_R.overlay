@@ -1,5 +1,7 @@
 #include "cool642tb.dtsi"
 #include <dt-bindings/zmk/keys.h>
+// ↓ ★追加1: 入力イベントコードを使うために必要
+#include <dt-bindings/input/input-event-codes.h>
 
 &default_transform {
     col-offset = <6>;
@@ -15,7 +17,6 @@
         ;
 };
 
-// ZMK Studio対応などのためのInput Listener
 / {
     trackball_listener {
         compatible = "zmk,input-listener";
@@ -23,7 +24,6 @@
     };
 };
 
-// SPIピン定義
 &pinctrl {
     spi0_default: spi0_default {
         group1 {
@@ -59,18 +59,16 @@
         reg = <0>;
         spi-max-frequency = <2000000>;
         
-        // 【重要】割り込みピンの設定
-        // これにより省電力かつ低遅延な「割り込みモード」で動作します
         irq-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
 
-        // マウス感度 (CPI) 設定
-        // 必要に応じて数値を変更してください (例: 400, 800, 1200, 1600)
-        cpi = <800>;
-
-        // スクロールモードにするレイヤー番号 (レイヤー4の時スクロール)
-        scroll-layers = <4>;
+        // ↓ ★追加2: 「これはマウス（相対座標デバイス）です」と宣言する必須項目
+        evt-type = <INPUT_EV_REL>;
         
-        // 自動マウスレイヤーが必要な場合はコメントを外して設定
-        // automouse-layer = <4>;
+        // ↓ ★追加3: X軸とY軸の入力コードを指定（これも必須の場合が多い）
+        x-input-code = <INPUT_REL_X>;
+        y-input-code = <INPUT_REL_Y>;
+
+        cpi = <800>;
+        scroll-layers = <4>;
     };
 };
