@@ -1,6 +1,5 @@
 #include "cool642tb.dtsi"
 #include <dt-bindings/zmk/keys.h>
-// ↓ ★追加1: 入力イベントコードを使うために必要
 #include <dt-bindings/input/input-event-codes.h>
 
 &default_transform {
@@ -59,16 +58,18 @@
         reg = <0>;
         spi-max-frequency = <2000000>;
         
+        // 割り込みピン (遅延解消の要)
         irq-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
 
-        // ↓ ★追加2: 「これはマウス（相対座標デバイス）です」と宣言する必須項目
+        // Input API設定
         evt-type = <INPUT_EV_REL>;
-        
-        // ↓ ★追加3: X軸とY軸の入力コードを指定（これも必須の場合が多い）
         x-input-code = <INPUT_REL_X>;
         y-input-code = <INPUT_REL_Y>;
 
+        // 感度設定
         cpi = <800>;
-        scroll-layers = <4>;
+        
+        // ★削除: scroll-layers はこのドライバでは使えません
+        // scroll-layers = <4>; 
     };
 };
