@@ -1,6 +1,8 @@
 #include "cool642tb.dtsi"
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/input/input-event-codes.h>
+// ↓ ★追加1: スクロール機能（Input Processor）を使うために必須
+#include <input/processors.dtsi>
 
 &default_transform {
     col-offset = <6>;
@@ -16,10 +18,17 @@
         ;
 };
 
+// ↓ ★追加2: ここで「どのレイヤーの時にスクロールするか」を定義します
 / {
     trackball_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
+
+        // レイヤー4が有効な時だけ、マウスの動きを「スクロール」に変換する設定
+        scroll {
+            layers = <4>;
+            input-processors = <&zip_xy_to_scroll_mapper>;
+        };
     };
 };
 
@@ -68,8 +77,5 @@
 
         // 感度設定
         cpi = <800>;
-        
-        // ★削除: scroll-layers はこのドライバでは使えません
-        // scroll-layers = <4>; 
     };
 };
