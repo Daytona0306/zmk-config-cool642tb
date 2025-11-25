@@ -1,8 +1,8 @@
 #include "cool642tb.dtsi"
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/input/input-event-codes.h>
-#include <input/processors.dtsi>
 #include <dt-bindings/zmk/input_transform.h>
+#include <input/processors.dtsi>
 
 &default_transform {
     col-offset = <6>;
@@ -23,14 +23,13 @@
         compatible = "zmk,input-listener";
         device = <&trackball>;
 
-        // 通常時のマウスカーソル（これは今のまま正常動作）
+        // 通常時のマウス移動 (Y軸反転)
         input-processors = <&zip_xy_transform (INPUT_TRANSFORM_Y_INVERT)>;
 
-        // スクロールモード（ここを修正）
+        // スクロールモード (レイヤー4)
         scroll {
             layers = <4>;
-            // ★修正: ここにあった "&zip_xy_transform (INPUT_TRANSFORM_Y_INVERT)," を削除しました。
-            // これでスクロールの向きだけが現在と逆になります。
+            // スクロール時は反転なし
             input-processors = <&zip_xy_to_scroll_mapper>;
         };
     };
@@ -69,17 +68,17 @@
         status = "okay";
         compatible = "pixart,pmw3610";
         reg = <0>;
-        spi-max-frequency = <2000000>;
+
+        // 【今回の勝負手】通信速度を4MHzに倍増させる
+        // 読み取り時間を半分にし、CPU負荷を下げてLED/通話との衝突を回避します
+        spi-max-frequency = <4000000>;
         
-        // 割り込みピン
         irq-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
 
-        // Input API設定
         evt-type = <INPUT_EV_REL>;
         x-input-code = <INPUT_REL_X>;
         y-input-code = <INPUT_REL_Y>;
 
-        // 感度設定
         cpi = <800>;
     };
 };
