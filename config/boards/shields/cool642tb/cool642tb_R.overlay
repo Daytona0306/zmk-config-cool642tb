@@ -3,6 +3,7 @@
 #include <dt-bindings/input/input-event-codes.h>
 #include <dt-bindings/zmk/input_transform.h>
 #include <input/processors.dtsi>
+#include <scroll-snap.dtsi>
 
 &default_transform {
     col-offset = <6>;
@@ -18,23 +19,79 @@
         ;
 };
 
+// ============================================
+// 1. 加速設定 (Torabo-tsuki仕様)
+// ============================================
+// ※ west.yml に zmk-pointer-acceleration が必要です
+/ {
+    pointer_accel: pointer_accel {
+        compatible = "zmk,input-processor-acceleration";
+        #input-processor-cells = <0>;
+
+        input-type = <INPUT_EV_REL>;
+        codes = <INPUT_REL_X INPUT_REL_Y>;
+        
+        // Torabo-tsukiの設定値
+        sensitivity = <1>;       // ベース感度
+        max-factor = <5000>;     // 最大加速 5.0x
+        curve-type = <1>;        // 1=Mild (扱いやすいカーブ)
+        sensor-dpi = <600>;      // センサーのCPI設定に合わせる
+    };
+
+    // スクロールの向き反転用エイリアス
+    zip_scroll_transform: zip_scroll_transform {
+        compatible = "zmk,input-processor-transform";
+        #input-processor-cells = <1>;
+    };
+    
+    // スクロール速度調整用エイリアス
+    zip_scroll_scaler: zip_scroll_scaler {
+        compatible = "zmk,input-processor-scaler";
+        #input-processor-cells = <2>;
+    };
+};
+
+
+// ============================================
+// 2. Trackball Listener
+// ============================================
 / {
     trackball_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
 
-        // 通常時のマウス移動 (Y軸反転)
-        input-processors = <&zip_xy_transform (INPUT_TRANSFORM_Y_INVERT)>;
+        // 【通常時のマウス移動】
+        // 1. 上下反転
+        // 2. 2倍スケール
+        input-processors = 
+            <&zip_xy_transform (INPUT_TRANSFORM_Y_INVERT)>, 
+            <&zip_xy_scaler 2 1>;
 
-        // スクロールモード (レイヤー4)
-        scroll {
+        // 【スクロールモード (レイヤー4)】
+        scroller {
             layers = <4>;
-            // スクロール時は反転なし
-            input-processors = <&zip_xy_to_scroll_mapper>;
+            input-processors = 
+                // 1. 加速 (Torabo-tsukiの高機能加速)
+                <&pointer_accel>,
+                
+                // 2. スクロール信号へ変換
+                <&zip_xy_to_scroll_mapper>,
+                
+                // 3. スナップ (モジュール機能)
+                <&zip_scroll_snap>,
+                
+                // 4. スクロールの向き調整 (X軸反転)
+                <&zip_scroll_transform (INPUT_TRANSFORM_X_INVERT)>,
+                
+                // 5. 速度調整 (1/30に減速)
+                <&zip_scroll_scaler 1 30>;
         };
     };
 };
 
+// ============================================
+// 3. SPI & Pin Configuration
+// ============================================
 &pinctrl {
     spi0_default: spi0_default {
         group1 {
@@ -69,10 +126,7 @@
         compatible = "pixart,pmw3610";
         reg = <0>;
 
-        // 【今回の勝負手】通信速度を4MHzに倍増させる
-        // 読み取り時間を半分にし、CPU負荷を下げてLED/通話との衝突を回避します
-        spi-max-frequency = <4000000>;
-        
+        spi-max-frequency = <2000000>;
         irq-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
 
         evt-type = <INPUT_EV_REL>;
