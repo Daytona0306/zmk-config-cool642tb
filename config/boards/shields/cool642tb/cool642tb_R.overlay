@@ -60,9 +60,12 @@
         device = <&trackball>;
 
         // 【通常時のマウス移動】
+        // 【通常時のマウス移動】
         // 1. 上下反転
+        // 2. 1倍スケール
         input-processors = 
             <&zip_xy_transform (INPUT_TRANSFORM_Y_INVERT)>, 
+            <&zip_xy_scaler 1 1>;
 
         // 【スクロールモード (レイヤー4)】
         scroller {
