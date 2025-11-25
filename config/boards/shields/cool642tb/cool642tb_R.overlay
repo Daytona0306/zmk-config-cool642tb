@@ -2,7 +2,6 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/input/input-event-codes.h>
 #include <input/processors.dtsi>
-// ↓ ★追加: 座標反転（Transform）機能を使うために必須のヘッダー
 #include <dt-bindings/zmk/input_transform.h>
 
 &default_transform {
@@ -24,16 +23,15 @@
         compatible = "zmk,input-listener";
         device = <&trackball>;
 
-        // ★追加: 通常のマウスカーソル移動時の設定
-        // INPUT_TRANSFORM_Y_INVERT を指定して、Y軸（上下）のみ反転させます
+        // 通常時のマウスカーソル（これは今のまま正常動作）
         input-processors = <&zip_xy_transform (INPUT_TRANSFORM_Y_INVERT)>;
 
-        // レイヤー4が有効な時だけ、マウスの動きを「スクロール」に変換する設定
+        // スクロールモード（ここを修正）
         scroll {
             layers = <4>;
-            // ★変更: スクロール時も「Y軸反転」を適用してから、スクロール信号に変換します
-            // これを入れないと、スクロール時だけ上下が逆になってしまいます
-            input-processors = <&zip_xy_transform (INPUT_TRANSFORM_Y_INVERT)>, <&zip_xy_to_scroll_mapper>;
+            // ★修正: ここにあった "&zip_xy_transform (INPUT_TRANSFORM_Y_INVERT)," を削除しました。
+            // これでスクロールの向きだけが現在と逆になります。
+            input-processors = <&zip_xy_to_scroll_mapper>;
         };
     };
 };
@@ -73,7 +71,7 @@
         reg = <0>;
         spi-max-frequency = <2000000>;
         
-        // 割り込みピン (遅延解消の要)
+        // 割り込みピン
         irq-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
 
         // Input API設定
