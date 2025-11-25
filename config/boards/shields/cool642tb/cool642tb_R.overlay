@@ -34,7 +34,7 @@
         sensitivity = <1>;       // ベース感度
         max-factor = <5000>;     // 最大加速 5.0x
         curve-type = <1>;        // 1=Mild (扱いやすいカーブ)
-        sensor-dpi = <600>;      // センサーのCPI設定に合わせる
+        sensor-dpi = <400>;      // センサーのCPI設定に合わせる
     };
 
     // スクロールの向き反転用エイリアス
@@ -62,10 +62,10 @@
         // 【通常時のマウス移動】
         // 【通常時のマウス移動】
         // 1. 上下反転
-        // 2. 1倍スケール
+        // 2. 2倍スケール
         input-processors = 
             <&zip_xy_transform (INPUT_TRANSFORM_Y_INVERT)>, 
-            <&zip_xy_scaler 1 1>;
+            <&zip_xy_scaler 2 1>;
 
         // 【スクロールモード (レイヤー4)】
         scroller {
