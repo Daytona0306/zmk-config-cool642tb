@@ -1,8 +1,9 @@
 #include "cool642tb.dtsi"
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/input/input-event-codes.h>
-// ↓ ★追加1: スクロール機能（Input Processor）を使うために必須
 #include <input/processors.dtsi>
+// ↓ ★追加: 座標反転（Transform）機能を使うために必須のヘッダー
+#include <dt-bindings/zmk/input_transform.h>
 
 &default_transform {
     col-offset = <6>;
@@ -18,16 +19,21 @@
         ;
 };
 
-// ↓ ★追加2: ここで「どのレイヤーの時にスクロールするか」を定義します
 / {
     trackball_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
 
+        // ★追加: 通常のマウスカーソル移動時の設定
+        // INPUT_TRANSFORM_Y_INVERT を指定して、Y軸（上下）のみ反転させます
+        input-processors = <&zip_xy_transform (INPUT_TRANSFORM_Y_INVERT)>;
+
         // レイヤー4が有効な時だけ、マウスの動きを「スクロール」に変換する設定
         scroll {
             layers = <4>;
-            input-processors = <&zip_xy_to_scroll_mapper>;
+            // ★変更: スクロール時も「Y軸反転」を適用してから、スクロール信号に変換します
+            // これを入れないと、スクロール時だけ上下が逆になってしまいます
+            input-processors = <&zip_xy_transform (INPUT_TRANSFORM_Y_INVERT)>, <&zip_xy_to_scroll_mapper>;
         };
     };
 };
