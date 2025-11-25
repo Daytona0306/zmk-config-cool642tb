@@ -20,9 +20,8 @@
 };
 
 // ============================================
-// 1. 加速設定 (Torabo-tsuki仕様)
+// 1. 加速設定 
 // ============================================
-// ※ west.yml に zmk-pointer-acceleration が必要です
 / {
     pointer_accel: pointer_accel {
         compatible = "zmk,input-processor-acceleration";
@@ -62,16 +61,14 @@
 
         // 【通常時のマウス移動】
         // 1. 上下反転
-        // 2. 2倍スケール
         input-processors = 
             <&zip_xy_transform (INPUT_TRANSFORM_Y_INVERT)>, 
-            <&zip_xy_scaler 2 1>;
 
         // 【スクロールモード (レイヤー4)】
         scroller {
             layers = <4>;
             input-processors = 
-                // 1. 加速 (Torabo-tsukiの高機能加速)
+                // 1. 加速 
                 <&pointer_accel>,
                 
                 // 2. スクロール信号へ変換
