@@ -12,14 +12,16 @@ manifest:
       url-base: https://github.com/nuovotaka
     - name: kot149
       url-base: https://github.com/kot149
+    - name: badjeff    # <-- PMW3610
+      url-base: https://github.com/badjeff
       
   projects:
     - name: zmk
       remote: zmkfirmware
       revision: main
       import: app/west.yml
-    - name: zmk-pmw3610-driver-badjeff
-      remote: Daytona0306
+    - name: zmk-pmw3610-driver
+      remote: badjeff
       revision: main
     - name: zmk-rgbled-widget  # <-- new entry
       remote: caksoylar
