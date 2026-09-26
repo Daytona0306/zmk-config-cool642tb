@@ -1,7 +1,10 @@
-#include <dt-bindings/zmk/matrix_transform.h>
 #include <input/processors.dtsi>
 #include <dt-bindings/zmk/input_transform.h>
 #include <input/processors/runtime-input-processor.dtsi>
+/* matrix_transform.h はプロセッサ系の後ろに置くこと。プロセッサ系の
+ * include 連鎖が modifiers.h を引き込み RC マクロを単引数版で上書きするため、
+ * 先に読むと map の RC(row,col) が壊れてビルドが落ちる (mona2 と同順)。 */
+#include <dt-bindings/zmk/matrix_transform.h>
 #include <scroll-snap.dtsi>
 #include <physical_layouts.dtsi>
 
