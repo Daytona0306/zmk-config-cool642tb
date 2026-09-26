@@ -1,0 +1,42 @@
+if SHIELD_COOL642TB_R
+
+config ZMK_KEYBOARD_NAME
+    default "cool642tb"
+
+config ZMK_BLE
+    default y
+
+config ZMK_SPLIT_ROLE_CENTRAL
+    default y
+
+config INPUT
+    default y
+
+config ZMK_POINTING
+    default y
+
+config SPI
+    default y
+
+# cormoran/zmk-driver-pmw3610-with-custom-studio-rpc のドライバ本体
+# (DT に compatible = "cormoran,pmw3610" のノードが無ければ自動的に無効)
+config PMW3610
+    default y
+
+endif
+
+if SHIELD_COOL642TB_R || SHIELD_COOL642TB_L
+
+config NFCT_PINS_AS_GPIOS
+    default y
+
+config ZMK_SPLIT
+    default y
+
+config RGBLED_WIDGET_BATTERY_LEVEL_HIGH
+    default 30
+
+config RGBLED_WIDGET_BATTERY_LEVEL_CRITICAL
+    default 10
+
+endif

@@ -1,16 +1,149 @@
 manifest:
   remotes:
-    - name: zmkfirmware
-      url-base: https://github.com/zmkfirmware
-    - name: telzo2000
-      url-base: https://github.com/telzo2000
+    - name: cormoran           # DYA Studio (ZMK フォーク本体 + 各モジュール)
+      url-base: https://github.com/cormoran
+    - name: caksoylar          # RGB LED ウィジェット
+      url-base: https://github.com/caksoylar
+    - name: kot149             # スクロールスナップ
+      url-base: https://github.com/kot149
+    - name: shakushakupanda    # マウスジェスチャー (kot149 のフォーク + RPC)
+      url-base: https://github.com/shakushakupanda
+    - name: ssbb               # レイヤーリスナー
+      url-base: https://github.com/ssbb
+    - name: sekigon-gonnoc     # 非リポ電池 (コイン電池等)
+      url-base: https://github.com/sekigon-gonnoc
+    - name: zettaface          # Input Processor Keybind
+      url-base: https://github.com/zettaface
+    - name: Daytona0306          # hold-tap hook入りZMK + ランタイムモジュール置き場
+      url-base: https://github.com/Daytona0306
   projects:
+    # ── ZMK 本体 ────────────────────────────────────────────────
+    # DYA Studio のランタイムマクロ / ランタイムコンボは cormoran さんの
+    # custom Studio RPC を含む ZMK でしか動かない。main+dya がそれを包含する
+    # DYA 向けブランチ。ベースは ZMK v0.4 系 (Zephyr 4.1) で、旧
+    # v0.3-branch+dya (Zephyr 3.5) からメジャーバージョンが上がっている。
     - name: zmk
-      remote: zmkfirmware
-      revision: main
+      remote: Daytona0306
+      revision: e6ffb72d36e221ebb159fda41b5e1caaf538a455  # track: dya-holdtap-hook
       import: app/west.yml
-    - name: zmk-pmw3610-driver
-      remote: telzo2000
-      revision: main
+
+    # ── DYA Studio 共通基盤 ─────────────────────────────────────
+    # 設定の永続化レイヤ。runtime 系がすべてこの上に乗るため必須。
+    - name: zmk-feature-custom-settings
+      remote: cormoran
+      revision: c6a7fef3a3be3d3ace5de9a4b0628c6418cd1f3f  # track: main
+    - name: zmk-module-ble-management
+      remote: cormoran
+      revision: 57738cc4fc6ba80e82a7ac57741a0339cb186cd4  # track: main
+    - name: zmk-module-settings-rpc
+      remote: cormoran
+      revision: 78f86df9e6c5edaf57bef3ccbd7f360cfdf49291  # track: main
+    - name: zmk-module-runtime-input-processor
+      remote: cormoran
+      revision: 43618985f8c9d5457cc333b7ca0733f2d361911e  # track: main
+    - name: zmk-behavior-runtime-sensor-rotate
+      remote: cormoran
+      revision: 8b1125ed676c1f5e14145d217984f33d0ebdcef4  # track: main
+
+    # ── マクロ / コンボのランタイム編集 ─────────────────────────
+    - name: zmk-feature-runtime-combo
+      remote: cormoran
+      revision: d9490e7b5d41c516221d131241009e81740efcee  # track: main
+    - name: zmk-feature-runtime-macro
+      remote: cormoran
+      revision: 38530962eb7061b60efcb98e84585cfb1f0cb6de  # track: main
+
+    # ── DYA Studio の診断タブ ───────────────────────────────────
+    - name: zmk-feature-kscan-diagnostics
+      remote: cormoran
+      revision: 1432f7fe0cfe903cd7d3c9931ae6bd6f2e1f328e  # track: main
+    - name: zmk-feature-input-stream
+      remote: cormoran
+      revision: aeb015908a42a7615ccdccc7feb3a10d23132a71  # track: main
+    - name: zmk-module-devtool
+      remote: cormoran
+      revision: 9938a2c73c06d6e65ba2c0b68c9aa044a467eafc  # track: main
+    - name: zmk-feature-device-info
+      remote: cormoran
+      revision: 8cedd2dd9f04e19ea5a17b94914dd47a09d8db11  # track: main
+    - name: zmk-feature-watchdog
+      remote: cormoran
+      revision: 84ad14c6c3645dc40b23f45d08ab45418655f912  # track: main
+    - name: zmk-feature-zephyr-setting-expose
+      remote: cormoran
+      revision: 5c89bc71122840ea46032fc241bef8665b99728a  # track: main
+    - name: zmk-feature-studio-rpc-perf
+      remote: cormoran
+      revision: b6ccb08cdc46e9e6341b0c42b97f78f05df0939e  # track: main
+
+    # ── 接続先 / OS ごとのデフォルトレイヤー ────────────────────
+    # NOTE: main には custom Studio RPC が入っておらず Studio のパネルから
+    #       操作できないため codex/custom-rpc-rewrite を使う。
+    - name: zmk-feature-default-layer
+      remote: cormoran
+      revision: b25cb5b324da2d9bbc84e1877c775f5b2b7c6845  # track: codex/custom-rpc-rewrite
+    - name: zmk-feature-os-detection
+      remote: cormoran
+      revision: 3052679f645b8fc1997275c2eaa6b86bdd55ca01  # track: main
+
+    # ── トラックボール (PMW3610) ────────────────────────────────
+    # badjeff/zmk-pmw3610-driver から cormoran さんの custom Studio RPC 対応版へ。
+    # Zephyr 4.1 が純正 "pixart,pmw3610" を取り込んだため旧 compatible は
+    # そのまま使えない。compatible は "cormoran,pmw3610" に変わり、
+    # swap-xy / invert-x / invert-y は devicetree ではなく
+    # CONFIG_PMW3610_SWAP_XY / _INVERT_X / _INVERT_Y になる (Studio から変更可)。
+    - name: zmk-driver-pmw3610-with-custom-studio-rpc
+      remote: cormoran
+      revision: 5c34ea0eec246a1c986111417cd779b53144629a  # track: main
+
+    # ── 非リポ電池 (コイン電池等) ───────────────────────────────
+    # cool642tb は非リポ駆動のため必須。mona2 には無い。
+    - name: zmk-feature-non-lipo-battery-management
+      remote: sekigon-gonnoc
+      revision: 43fa56fb7d1e065393e926b6caa0ea02cb86eca7  # track: main
+
+    # ── その他 ──────────────────────────────────────────────────
+    # v0.3-branch は Zephyr 3.5 向けなので main へ
+    - name: zmk-rgbled-widget
+      remote: caksoylar
+      revision: e6b467792a1dabef8cfa5c9fd26bfefc9c16662b  # track: main
+    - name: zmk-input-processor-keybind
+      remote: zettaface
+      revision: 64303bd3932bfa7f49261fc6d0c9a3fdd06f8271  # track: main
+
+    # ── スクロール / ジェスチャー ───────────────────────────────
+    - name: zmk-scroll-snap
+      remote: kot149
+      revision: 62a669c32353576df18d6f835ccb2133e2238e1d  # track: v1
+    # kot149/v1 のフォーク。ZMK v0.4 の endpoints API 改名対応と、
+    # ジェスチャー入力中のカーソル抑制が入っている。
+    # DT プロパティと Kconfig は kot149/v1 から変わっていないので
+    # gestures.dtsi はそのまま使える。
+    - name: zmk-mouse-gesture
+      remote: shakushakupanda
+      revision: 10597a47ed60b5f7c07710a0eeff7f7cb9576a1e  # track: suppress-cursor-while-active
+    # ジェスチャーを Flash に保存し DYA Studio から編集できるようにする。
+    # 書き換え対象は DT インスタンス0番のみなので、RPC 用ノードを
+    # cool642tb_R.overlay の先頭側で定義して0番を取らせている。
+    - name: zmk-module-mouse-gesture-rpc
+      remote: shakushakupanda
+      revision: 1374f1d487d5df07d6d990f1c058d9c7a313f90d  # track: main
+    - name: zmk-listeners
+      remote: ssbb
+      revision: c240ceaf353d3138bea7695eef17049b7ade995b  # track: v1
+    # 慣性スクロール。RPC モジュール内蔵のものは弾き検出が無く
+    # トラックボールに向かないため、こちらを使う。
+    # dya-inertia-hook入りfork。weak hookのみで本体改変なし。
+    - name: zmk-input-processor-scroll-inertia
+      remote: Daytona0306
+      revision: 566dd35382fb04e8999e8f6e01fa5a0eae47369b  # track: dya-inertia-hook
+
+    # ── hold-tap / inertia 実行時調整 (torabo-tsuki LP 移植) ──
+    - name: zmk-feature-holdtap-config
+      remote: Daytona0306
+      revision: 4b0d4f01a1780acf6a99b453f5d7e8d71fef555d  # track: main
+    - name: zmk-feature-inertia-config
+      remote: Daytona0306
+      revision: 5930975f80745a8ffb32b276fc3f3afd77e461ac  # track: main
   self:
     path: config

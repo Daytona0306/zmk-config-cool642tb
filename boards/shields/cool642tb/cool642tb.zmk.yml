@@ -2,7 +2,8 @@ file_format: "1"
 id: cool642tb
 name: cool642tb
 type: shield
-url: https://github.com/telzo2000/zmk-config-cool642tb
+url: https://github.com/Daytona0306/zmk-config-cool642tb
 requires: [seeeduino_xiao_ble]
 features:
   - keys
+  - studio

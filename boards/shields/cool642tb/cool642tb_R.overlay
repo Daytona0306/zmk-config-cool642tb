@@ -1,0 +1,157 @@
+#include "cool642tb.dtsi"
+#include <input/processors.dtsi>
+#include <zephyr/dt-bindings/input/input-event-codes.h>
+#include <dt-bindings/zmk/modifiers.h>
+#include <dt-bindings/zmk/mouse-gesture.h>
+
+/* NOTE: <input/processors/runtime-input-processor.dtsi> と <scroll-snap.dtsi> を
+ *   ここで include してはいけない。どちらも cool642tb.dtsi の先頭で既に読んでおり、
+ *   再 include すると既定値が再適用される。 */
+
+&default_transform {
+    col-offset = <6>;
+};
+
+&kscan0 {
+        col-gpios
+            = <&xiao_d 10 GPIO_ACTIVE_HIGH>
+            , <&xiao_d 9 GPIO_ACTIVE_HIGH>
+            , <&xiao_d 8 GPIO_ACTIVE_HIGH>
+            , <&xiao_d 7 GPIO_ACTIVE_HIGH>
+            , <&gpio0 10 GPIO_ACTIVE_HIGH>
+            ;
+};
+
+
+&pinctrl {
+    spi0_default: spi0_default {    //通常時(SPI通信中)のピン構成
+        group1 {
+            psels = <NRF_PSEL(SPIM_SCK, 0, 5)>, //P0.05を指定(SCLK)
+                <NRF_PSEL(SPIM_MOSI, 0, 4)>,    //P0.04を指定(SDIOだからMOSI,MISO両方の役割を担う)
+                <NRF_PSEL(SPIM_MISO, 0, 4)>;
+        };
+    };
+
+    spi0_sleep: spi0_sleep {    //スリープ時のピン構成(省電力)
+        group1 {
+            psels = <NRF_PSEL(SPIM_SCK, 0, 5)>,
+                <NRF_PSEL(SPIM_MOSI, 0, 4)>,
+                <NRF_PSEL(SPIM_MISO, 0, 4)>;
+            low-power-enable;
+        };
+    };
+};
+
+
+&spi0 {
+    status = "okay";
+    compatible = "nordic,nrf-spim"; //マイコンがnRFシリーズ
+    pinctrl-0 = <&spi0_default>;
+    pinctrl-1 = <&spi0_sleep>;
+    pinctrl-names = "default", "sleep";
+    cs-gpios = <&gpio0 9 GPIO_ACTIVE_LOW>;  //P0.09を指定(CS)
+
+    /* cormoran さんの custom Studio RPC 対応 PMW3610 ドライバ。
+     * DYA Studio の「トラックボールセンサー」診断タブがこれを要求する。
+     * 軸の反転は devicetree ではなく CONFIG_PMW3610_SWAP_XY / _INVERT_X /
+     * _INVERT_Y で指定する (cool642tb_R.conf 参照)。DYA Studio から実行時にも
+     * 変更できる。 */
+    trackball_central: trackball_central@0 {
+        status = "okay";
+        compatible = "cormoran,pmw3610";
+        reg = <0>;
+        spi-max-frequency = <2000000>;
+        irq-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>; //P0.02を指定(MOTION)
+        cpi = <600>;
+        evt-type = <INPUT_EV_REL>;
+        x-input-code = <INPUT_REL_X>;
+        y-input-code = <INPUT_REL_Y>;
+        /* DYA Studio 上でこのセンサーを識別するための短い ID */
+        settings-id = "tball";
+    };
+};
+
+/* RPC からランタイム編集できるマウスジェスチャー。
+ *
+ * NOTE1: ノード名を mouse_gesture にしないこと。
+ *   zmk-mouse-gesture の mouse-gesture.dtsi が同名のビヘイビアノード
+ *   (compatible = "zmk,behavior-mouse-gesture") を定義しており、
+ *   DTS 上でマージされて binding 不一致でビルドが落ちる。
+ *
+ * NOTE2: zmk_mouse_gesture_runtime_set() は DEVICE_DT_GET(DT_DRV_INST(0))
+ *   固定で、RPC が書き換えるのは DT インスタンス0番のみ。このノードを
+ *   gestures.dtsi の6プロセッサより先に定義して0番を取らせている。
+ *   定義順を変えると壊れる。
+ *
+ * NOTE3: always-active は付けない。&mg_set N を押している間だけ判定が
+ *   有効になる。付けると g_suppress_cursor が立ちっぱなしになり
+ *   全レイヤーでカーソルが止まる (torabo-tsuki で踏んだ)。 */
+ /{
+    mg: rpc_mouse_gesture {
+        compatible = "zmk,input-processor-mouse-gesture";
+        #input-processor-cells = <0>;
+        /* モジュール既定の 200 はトラックボールには大きすぎる。
+         * Studio の Reset はここの値を再シードするので、既定値の側を実機に合わせておく。 */
+        stroke-size = <20>;
+        movement-threshold = <5>;
+        idle-timeout-ms = <100>;
+        gesture-cooldown-ms = <200>;
+
+        /* trie 構築のためのプレースホルダ。実際の割り当ては RPC で上書きされる。 */
+        placeholder {
+            pattern = <GESTURE_UP GESTURE_RIGHT>;
+            bindings = <&kp ESC>;
+        };
+    };
+};
+
+//Scroll inertia processor
+/{
+    scroll_inertia_free: scroll_inertia_free {
+        compatible = "zmk,input-processor-scroll-inertia";
+        #input-processor-cells = <0>;
+        axis      = <0>;          /* 両軸 — 斜めスクロール可能 */
+        layer     = <5>;          /* NUM-SCROLL レイヤー (iPad 挿入で 4 -> 5) */
+        scale     = <1000>;
+        scale-div = <1000>;
+
+        tick = <17>;
+        release = <51>;
+
+        /* ── 弾き検出のゲート ──
+         * この3つが「小さい動きでは慣性に入らず、大きく弾いたときだけ効く」を
+         * 決めている。mona2 で詰めた値 (CPI 600 で共通) をそのまま使う。 */
+        start = <30>;       /* 慣性に入る最低ピーク速度 */
+        move = <45>;        /* 発動に必要な累積移動量 */
+        min-events = <6>;   /* EMA 収束待ち・ノイズ除去 */
+
+        /* ── 転がり方 ── */
+        gain = <300>;       /* EMA の入力重み。gain + blend = 1000 */
+        blend = <700>;      /* EMA の履歴重み */
+        friction = <25>;    /* 毎ティックの定数減速 (千分率)。上げると早く止まる */
+        limit = <900>;      /* 速度上限。上げると弾きが伸びる */
+        stop = <1>;         /* これを下回ったら即停止 */
+
+        /* ── 多段減衰 ── */
+        span = <12000>;     /* 慣性継続の安全上限 */
+        fast = <250>;       /* これ超え = 「大きく弾いた」 */
+        decay-fast = <996>;
+        decay-slow = <985>;
+        slow = <60>;        /* ここから下がテールゾーン */
+        decay-tail = <982>; /* 尻尾は早めに畳む */
+    };
+};
+
+// Overrides for the input listener node
+&trackball_central_listener {
+    status = "okay";
+    device = <&trackball_central>;
+
+        input-processors =
+			<&zip_xy_transform INPUT_TRANSFORM_Y_INVERT>,
+			<&mg>,
+			<&mouse_runtime_input_processor>,
+			<&scroll_runtime_input_processor>,
+			<&zip_scroll_snap>,
+            <&scroll_inertia_free>;
+};
